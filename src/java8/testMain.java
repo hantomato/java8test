@@ -1,4 +1,4 @@
-package java8test;
+package java8;
 
 public class testMain {
 

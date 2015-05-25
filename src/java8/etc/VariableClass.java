@@ -1,7 +1,7 @@
 package java8.etc;
 
 /**
- * inner class example
+ * inner class example.
  * 
  * @author nmj
  *
@@ -24,7 +24,7 @@ public class VariableClass {
 	
 	public static void main(String...strings) {
 		
-		class MyLocalInnerClass {
+		class MyLocalInnerClass {						// local class.
 			@Override
 			public String toString() {
 				return "Class name is" + getClass().getName();

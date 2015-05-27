@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -55,6 +56,7 @@ import java.util.stream.Stream;
  * 	- Function<T, R>		R apply(T t);
  * 	- Supplier<T>			T get();
  *  - Comparator<T>			int compare(T o1, T o2);
+ *  - ToLongFunction<T>		long applyAsLong(T value);
  * 
  *  아래껀 복잡하네.
  * 	- UnaryOperator<T> extends Function<T, T>			static <T> UnaryOperator<T> identity() {
@@ -66,6 +68,7 @@ import java.util.stream.Stream;
 public class StreamExample1 {
 	
 	// 네이버 영화배우 랭킹 데이터 활용.
+	static long staticManActorTotalAge = 0;
 
 	static class Actor {
 		public int ranking;
@@ -89,6 +92,9 @@ public class StreamExample1 {
 		public String getNationality() {
 			return nationality;
 		}
+		public int getAge() {
+			return 2015 - getBirth();
+		}
 
 		public Actor(int ranking, String name, String sex, int birth, String nationality) {
 			this.ranking = ranking;
@@ -99,7 +105,7 @@ public class StreamExample1 {
 		}
 		
 		public static int sortBirth(Actor a, Actor b) {
-			if (a.birth > b.birth){
+			if (a.birth < b.birth){
 				return 1;
 			} else if (a.birth == b.birth) {
 				return 0;
@@ -127,11 +133,11 @@ public class StreamExample1 {
 		actors.add(new Actor(9, "엘리자베스 올슨", "여", 1989, "미국"));
 		actors.add(new Actor(10, "이유영", "여", 1989, "한국"));
 		
-//		actors.add(new Actor(11, "콜린 퍼스", "남", 1960, "미국"));
-//		actors.add(new Actor(12, "채민서", "여", 1981, "한국"));
-//		actors.add(new Actor(13, "박수진", "여", 1985, "한국"));
-//		actors.add(new Actor(14, "오세홍", "남", 1951, "한국"));
-//		actors.add(new Actor(15, "민규동", "남", 1970, "한국"));
+		actors.add(new Actor(11, "콜린 퍼스", "남", 1960, "미국"));
+		actors.add(new Actor(12, "채민서", "여", 1981, "한국"));
+		actors.add(new Actor(13, "박수진", "여", 1985, "한국"));
+		actors.add(new Actor(14, "오세홍", "남", 1951, "한국"));
+		actors.add(new Actor(15, "민규동", "남", 1970, "한국"));
 		return actors;
 	}
 	
@@ -149,6 +155,7 @@ public class StreamExample1 {
 //		 * 	- Consumer<T>			void accept(T t);
 //		 * 	- Function<T, R>		R apply(T t);
 //		 * 	- Supplier<T>			T get();
+//		 *  - Comparator<T>			int compare(T o1, T o2);
 
 		
 		System.out.println("\n>> 모든 배우의 이름 출력");
@@ -157,39 +164,78 @@ public class StreamExample1 {
 		
 		System.out.println("\n>> 모든 배우를 랭킹순으로 랭킹과 이름 출력");
 		makeDummy().stream()
-			.sorted
-			.forEach(e -> System.out.println(e.name));
+			.sorted((x,y) -> { 
+				if (x.ranking > y.ranking)
+					return 1;
+				else if (x.ranking == y.ranking)
+					return 0;
+				else
+					return -1;
+			})
+			.forEach(e -> System.out.println(e.ranking + " - " + e.name));
 		
 		System.out.println("\n>> 남자 배우의 이름 출력");
 		makeDummy().stream()
 			.filter(x -> x.sex.equals("남"))
 			.forEach(e -> System.out.println(e.name));
 
+		System.out.println("\n>> 남자 배우의 이름 출력 - map 사용1");
+		makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.map(x -> x.name)
+			.forEach(e -> System.out.println(e));
+
+		System.out.println("\n>> 남자 배우의 이름 출력 - map 사용2");
+		makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.map(x -> String.format("%s(age:%d)", x.name, (2015-x.birth)))
+			.forEach(e -> System.out.println(e));
 		
-//		makeDummy().stream()
-////			.filter(x -> x.getBirth() > 0)
-//			.filter(x -> x.getBirth() > 0)
-//			.sorted(StreamExample1.Actor::sortBirth)
-//
-////			.sorted(x, y -> 1)
-////			.foreach(x -> System.out.println(""));
-////			.foreach(System.out::println);
-////			.foreach(e -> System.out.println("hh"));
-////			.foreach(e -> System.out.println(""));
-////			.foreach(e -> System.out.println());
-////			.collect(Collectors.toList());
-////			.forEach(System.out::println);
-//			.forEach(StreamExample1.Actor::printThis);
+		System.out.println("\n>> 남자 배우는 총 몇명?");
+		long cntManActor = makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.count();
+		System.out.println("  남자 배우 숫자 : " + cntManActor);
+
+		System.out.println("\n>> 남자 배우의 나이 출력");
+		makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.forEach(e -> System.out.println(e.name + " : " + (2015 - e.getBirth())));
 		
-			// foreach void accept(T t);
-		System.out.println("");	
-		System.out.println("");	
-		System.out.println("");	
-		System.out.println("");	
-		System.out.println("");	
+		System.out.println("\n>> 남자 배우의 나이 총합");
 		
+		staticManActorTotalAge = 0;
+		makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.forEach(e -> {
+				staticManActorTotalAge += (2015 - e.getBirth());
+			});
+		System.out.println("  총합1 : " + staticManActorTotalAge + " forEach 사용");
 		
-	}
+		long sum = makeDummy().stream()
+			.filter(x -> x.sex.equals("남"))
+			.mapToLong(x -> (2015 - x.getBirth()))
+			.sum();
+		
+		System.out.println("\n>>제일 어린 배우");
+
+		Optional<Actor> min = makeDummy().stream()
+			.min(Actor::sortBirth);
+			
+		if (min.isPresent())
+			System.out.println("제일 어린 배우는 : " + min.get().name + "(" + min.get().getAge() + ")");
+		else
+			System.out.println("제일 어린 배우 없음");
+
+		System.out.println("\n>> 50살 이상의 남자 배우의 나이 총합");
+		long sum2 = makeDummy().stream()
+				.filter(x -> x.sex.equals("남"))
+				.mapToLong(x -> (2015 - x.getBirth()))
+				.filter(x -> x >= 50)
+				.sum();
+			
+			System.out.println(sum2);
+			}
 	
 	
 	

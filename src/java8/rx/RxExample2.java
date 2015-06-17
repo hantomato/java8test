@@ -59,7 +59,7 @@ public class RxExample2 {
 	
 	public static void testTimer() {
 		System.out.println("start");
-		Observable<Long> obs1 = Observable.timer(3, TimeUnit.SECONDS);
+		Observable<Long> obs1 = Observable.timer(3, TimeUnit.SECONDS);		// 3초뒤에 subscribe 호출됨. 
 		obs1.observeOn(Schedulers.io())
 			.subscribeOn(Schedulers.io())
         	.subscribe(

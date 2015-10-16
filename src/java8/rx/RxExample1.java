@@ -24,7 +24,7 @@ import rx.schedulers.Schedulers;
 public class RxExample1 {
 	
 	public static void test1() {
-		System.out.println("test1 start");
+		System.out.println("- test1 start");
         Observable<String> obs  = Observable.just("apple", "pear", "blueberry");
         obs.subscribe(
         		// onNext
@@ -145,12 +145,14 @@ public class RxExample1 {
 	}
 	
 	public static void main(String... names){
-//		test1();
+		test1();
 //		test2();
 //		test3();
 //		test4();
 //		test5();
-		test6();
+//		test6();
+
+		System.out.println("- main end");
 		
 	}
 }

@@ -71,7 +71,5 @@ public class rxtest {
 //						System.out.println("aaa 3");
 //					}
 //				});
-
-
 	}
 }

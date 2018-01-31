@@ -21,9 +21,9 @@ package java8.book;
  *
  * Created by neowiztomato on 2018-01-22.
  */
-public class chapter0 {
+public class NmjChapter0 {
     public static void main(String... argc) {
-        System.out.println("== chapter 0 ==========");
+        System.out.println("== main start ==========");
         exercise1();
         exercise2();
         exercise3();

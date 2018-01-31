@@ -8,6 +8,7 @@ import rx.functions.Action1;
 
 public class rxtest {
 
+
 	public static void main(String... argc) {
 		System.out.println("start main!");
 		Observable<String> obs  = Observable.just("apple");

@@ -18,6 +18,7 @@ import java.util.stream.Stream;
  * Created by neowiztomato on 2018-01-30.
  */
 public class NmjChapter2 {
+	
     public static int start = 1;
 
     public static void main(String... argc) {

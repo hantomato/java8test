@@ -19,6 +19,7 @@ import java.util.stream.Stream;
  */
 public class NmjChapter2 {
 	
+	
     public static int start = 1;
 
     public static void main(String... argc) {

@@ -20,7 +20,11 @@ public class NmjChapter3 {
         exercise6();
         exercise7();
         exercise8();
-
+        exercise9();
+        exercise10();
+        exercise11();
+        exercise12();
+        exercise13();
     }
 
     public static String[] az = new String[] {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"};
@@ -109,4 +113,30 @@ public class NmjChapter3 {
         System.out.println("===== exercise 8 =====");
 
     }
+
+    public static void exercise9() {
+        System.out.println("===== exercise 9 =====");
+
+    }
+
+    public static void exercise10() {
+        System.out.println("===== exercise 10 =====");
+
+    }
+
+    public static void exercise11() {
+        System.out.println("===== exercise 1 =====");
+
+    }
+
+    public static void exercise12() {
+        System.out.println("===== exercise 12 =====");
+
+    }
+
+    public static void exercise13() {
+        System.out.println("===== exercise 13 =====");
+
+    }
+
 }

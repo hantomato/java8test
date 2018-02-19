@@ -1,4 +1,4 @@
-package java8.book;
+package java8.book.util;
 
 /**
  * Created by neowiztomato on 2018-01-23.
